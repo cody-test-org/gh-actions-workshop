@@ -2,6 +2,16 @@ name: "my hello action JS"
 
 description: "say hello with GitHub Actions"
 
+inputs:
+  who-to-greet:
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+
+outputs:
+  time:
+    description: 'The time when greeting occurred'
+
 runs:
   using: "node16"
   main: "dist/index.js"

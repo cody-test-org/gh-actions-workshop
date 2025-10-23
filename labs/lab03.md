@@ -141,7 +141,7 @@ jobs:
           echo "Secret: ${{ secrets.MY_REPO_SECRET }}"
           
       - name: Using secrets with actions
-        uses: actions/hello-world-javascript-action@v2
+        uses: ./.github/actions/hello-world-js
         with:
           who-to-greet: ${{ secrets.MY_REPO_SECRET }}
 ```

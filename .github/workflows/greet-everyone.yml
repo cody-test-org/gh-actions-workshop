@@ -1,8 +1,6 @@
 name: 01-2. Greet Everyone
-# This workflow is triggered on pushes to the repository.
+# This workflow is triggered manually or called from other workflows.
 on: 
-  push:
-  
   workflow_call:
     inputs:
       name:
@@ -24,10 +22,12 @@ jobs:
     # This job runs on Linux
     runs-on: ubuntu-latest
     steps:
-      # This step uses GitHub's hello-world-javascript-action: 
-      # https://github.com/actions/hello-world-javascript-action
+      # Checkout needed to access local action
+      - name: Checkout
+        uses: actions/checkout@v4
+      # This step uses the local hello-world-js action in .github/actions/hello-world-js
       - name: Hello world
-        uses: actions/hello-world-javascript-action@main
+        uses: ./.github/actions/hello-world-js
         with:
           who-to-greet: "Hey ${{ github.event.inputs.name }}${{ inputs.name }}"
         id: hello

@@ -220,7 +220,7 @@ runs:
       run: echo "${{ github.action_path }}" >> $GITHUB_PATH
     
     - name: Use marketplace action
-      uses: actions/hello-world-javascript-action@v2
+      uses: ./.github/actions/hello-world-js
       with:
         who-to-greet: "${{ inputs.who-to-greet }}"
       id: hello-js
