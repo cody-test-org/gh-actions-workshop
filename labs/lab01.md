@@ -65,9 +65,12 @@ Let's add steps using marketplace actions with proper version pinning for securi
 2. Add the following steps at the end of the `steps:` section (after the existing steps):
 
 ```yaml
-      # Using pinned version for security (v4 is latest major version)
+      # Using local custom action from .github/actions/hello-world-js
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
       - name: Hello world action
-        uses: actions/hello-world-javascript-action@v2
+        uses: ./.github/actions/hello-world-js
         with:
           who-to-greet: "Mona the Octocat"
         id: hello
@@ -181,9 +184,9 @@ jobs:
       
       - run: echo "🍏 This job's status is ${{ job.status }}."
       
-      # Using pinned version for security
+      # Using local custom action from .github/actions/hello-world-js
       - name: Hello world action
-        uses: actions/hello-world-javascript-action@v2
+        uses: ./.github/actions/hello-world-js
         with:
           who-to-greet: "Mona the Octocat"
         id: hello
