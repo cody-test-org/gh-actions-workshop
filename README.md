@@ -1,49 +1,66 @@
-# gh-abcs-actions
-> The GitHub ABCs actions training with workflow templates, examples, hands-on labs and additional learning resources.
+# GitHub Actions Workshop
+> Comprehensive GitHub Actions training with modern workflow examples, hands-on labs, and best practices for CI/CD automation.
 
-## Examples & Hands-on Labs
+## 🎯 Workshop Overview
 
-### Hands-on Labs Setup
-- [ ] [Lab Setup](/labs/setup.md)
+This workshop provides hands-on experience with GitHub Actions, from basic concepts to advanced CI/CD patterns. Whether you're new to GitHub Actions or familiar with other CI/CD tools, these labs will help you master automated workflows.
 
-### Module 1: Introduction to GitHub Actions
-- Example: [github-actions-demo.yml](/.github/workflows/github-actions-demo.yml)
-- Example: [greet-everyone.yml](/.github/workflows/greet-everyone.yml)
-- [ ] _Hands-on Lab:_ :point_right: [Activity 1](/labs/lab01.md)
+**Total Duration:** ~60 minutes of hands-on labs  
+**Prerequisites:** GitHub account, basic Git knowledge, familiarity with YAML syntax
 
-### Module 2: Syntax
-- Example: [simple-workflow.yml](/.github/workflows/simple-workflow.yml)
-- Example: [job-dependencies.yml](/.github/workflows/job-dependencies.yml)
-- [ ] _Hands-on Lab:_ :point_right: [Activity 2](/labs/lab02.md)
+## 📚 Examples & Hands-on Labs
 
-### Module 3: Environments and Secrets
-- Example: [environments-secrets.yml](/.github/workflows/environments-secrets.yml)
-- [ ] _Hands-on Lab:_ :point_right: [Activity 3](/labs/lab03.md)
+### 🚀 Getting Started
+- [ ] **[Lab Setup](/labs/setup.md)** _(5-10 min)_ - Fork repository and enable GitHub Actions
 
-### Module 4: Workflow Templates
-- Example: [reusable-workflow-template.yml](/.github/workflows/reusable-workflow-template.yml)
-- Example: [super-linter.yml](/.github/workflows/super-linter.yml)
-- [ ] _Hands-on Lab:_ :point_right: [Activity 4](/labs/lab04.md)
+### Module 1: Introduction to GitHub Actions _(5-10 min)_
+Learn the fundamentals of GitHub Actions workflows, triggers, and job summaries.
 
-### Module 5: Custom actions
-- Example: [github-script.yml](/.github/workflows/github-script.yml)
-- Example: [hello-world-composite.yml](/.github/workflows/hello-world-composite.yml)
-- Example: [use-custom-actions.yml](/.github/workflows/use-custom-actions.yml)
-- Repo: [githubabcs/hello-world-composite-action](https://github.com/githubabcs/hello-world-composite-action)
-- Repo: [write-docker-actions](https://github.com/CalinL/write-docker-actions)
-- Repo: [write-javascript-actions](https://github.com/CalinL/writing-javascript-actions)
-- [ ] _Hands-on Lab:_ :point_right: [Activity 5](/labs/lab05.md)
+- Example: [github-actions-demo.yml](/.github/workflows/github-actions-demo.yml) - Basic workflow structure
+- Example: [greet-everyone.yml](/.github/workflows/greet-everyone.yml) - Simple automation
+- [ ] **Hands-on Lab:** [Activity 1](/labs/lab01.md) - Create your first workflow with modern syntax
 
-### Module 6: Self-hosted runners
-- Example: [self-hosted-linux.yml](/.github/workflows/self-hosted-linux.yml)
-- [ ] _Hands-on Lab:_ :point_right: [Activity 6](/labs/lab06.md)
+### Module 2: Workflow Syntax & Job Dependencies _(5-10 min)_
+Master workflow syntax, job orchestration, and matrix strategies for parallel execution.
 
-### Module 7: CI/CD
-- Example: [ci-workflow.yml](/.github/workflows/ci-workflow.yml)
-- Example: [cd-workflow.yml](/.github/workflows/cd-workflow.yml)
-- Repo: [github-actions-for-packages](https://github.com/CalinL/github-actions-for-packages)
-- Repo: [github-actions-for-ci](https://github.com/CalinL/github-actions-for-ci)
-- [ ] _Hands-on Lab:_ :point_right: [Activity 7](/labs/lab07.md)
+- Example: [simple-workflow.yml](/.github/workflows/simple-workflow.yml) - Clean workflow syntax
+- Example: [job-dependencies.yml](/.github/workflows/job-dependencies.yml) - Complex job dependencies
+- [ ] **Hands-on Lab:** [Activity 2](/labs/lab02.md) - Build workflows with dependencies and matrix builds
+
+### Module 3: Environments, Secrets & Security _(10-15 min)_
+Implement secure deployment workflows with environment protection and secret management.
+
+- Example: [environments-secrets.yml](/.github/workflows/environments-secrets.yml) - Multi-environment deployments
+- [ ] **Hands-on Lab:** [Activity 3](/labs/lab03.md) - Configure environments with approvals and secrets
+
+### Module 4: Reusable Workflows _(10-15 min)_
+Create modular, reusable workflows to reduce duplication and standardize processes.
+
+- Example: [reusable-workflow-template.yml](/.github/workflows/reusable-workflow-template.yml) - Calling reusable workflows
+- Example: [super-linter.yml](/.github/workflows/super-linter.yml) - Code quality automation
+- [ ] **Hands-on Lab:** [Activity 4](/labs/lab04.md) - Build and consume reusable workflows
+
+### Module 5: Custom Actions _(10-15 min)_
+Develop custom actions using JavaScript, TypeScript, and Docker for specialized automation.
+
+- Example: [github-script.yml](/.github/workflows/github-script.yml) - Inline GitHub API automation
+- Example: [hello-world-composite.yml](/.github/workflows/hello-world-composite.yml) - Composite actions
+- Example: [use-custom-actions.yml](/.github/workflows/use-custom-actions.yml) - Custom action usage
+- Reference: [githubabcs/hello-world-composite-action](https://github.com/githubabcs/hello-world-composite-action)
+- [ ] **Hands-on Lab:** [Activity 5](/labs/lab05.md) - Create and use custom actions
+
+### Module 6: Self-hosted Runners & Scalability _(5-10 min)_
+Deploy and manage self-hosted runners for specialized workloads and cost optimization.
+
+- Example: [self-hosted-linux.yml](/.github/workflows/self-hosted-linux.yml) - Using self-hosted runners
+- [ ] **Hands-on Lab:** [Activity 6](/labs/lab06.md) - Understand self-hosted runner patterns
+
+### Module 7: CI/CD Best Practices _(15-20 min)_
+Build production-ready CI/CD pipelines with caching, artifacts, testing, and deployment strategies.
+
+- Example: [ci-workflow.yml](/.github/workflows/ci-workflow.yml) - Continuous Integration
+- Example: [cd-workflow.yml](/.github/workflows/cd-workflow.yml) - Continuous Deployment
+- [ ] **Hands-on Lab:** [Activity 7](/labs/lab07.md) - Implement complete CI/CD pipeline
 
 ---
 

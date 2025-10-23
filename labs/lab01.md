@@ -1,52 +1,34 @@
-# 1 - Introduction to GitHub Actions
-In this lab you will update and run your first workflow.
-> Duration: 5-10 minutes
+# 1 - Introduction to GitHub Actions 🎬
 
-References:
+In this lab you will create and run your first workflow with modern GitHub Actions syntax.
+
+> **Duration:** 5-10 minutes
+
+## Learning Objectives
+
+By the end of this lab, you will be able to:
+- ✅ Understand workflow triggers and events
+- ✅ Use modern GITHUB_OUTPUT syntax
+- ✅ Create job summaries with markdown
+- ✅ Work with context variables and expressions
+- ✅ Pin actions to specific versions for security
+
+## References
 - [Events that trigger workflows](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows)
-- [Adding an action to your workflow](https://docs.github.com/en/actions/learn-github-actions/finding-and-customizing-actions#adding-an-action-to-your-workflow)
+- [Workflow syntax for GitHub Actions](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)
+- [Context information](https://docs.github.com/en/actions/learn-github-actions/contexts)
+- [Job summaries](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary)
 
-## 1.1 Update the workflow to trigger when a change is made to the labs folder on main branch
+---
 
-1. Open the workflow file [github-actions-demo.yml](/.github/workflows/github-actions-demo.yml)
-2. Edit the file and copy the following YAML content after line 4:
-```YAML
-  push:
-    branches:
-      - main
-    paths:
-      - 'labs/**'
-```
-3. Commit the workflow changes into the `main` branch
-4. Change a file inside the folder [labs](/labs)
-5. Commit the changes into the `main` branch
-6. Go to `Actions` and see the details of your running workflow
+## 1.1 Update workflow to trigger on specific events
 
-## 1.2 Add steps to your workflow
+Let's configure a workflow to run when changes are made to the labs folder.
 
 1. Open the workflow file [github-actions-demo.yml](/.github/workflows/github-actions-demo.yml)
-2. Edit the file and copy the following YAML content at the end of the file:
-```YAML
-        # This step uses GitHub's hello-world-javascript-action: https://github.com/actions/hello-world-javascript-action
-      - name: Hello world
-        uses: actions/hello-world-javascript-action@main
-        with:
-          who-to-greet: "Mona the Octocat"
-        id: hello
-      # This step prints an output (time) from the previous step's action.
-      - name: Echo the greeting's time
-        run: echo 'The time was ${{ steps.hello.outputs.time }}.'   
-```
-3. Optional remove the `paths` to trigger the workflow on any push to main branch
-4. Commit the changes into the `main` branch
-5. If not step 3), change a file inside the folder [labs](/labs) and commit the changes into the `main` branch
-6. Go to `Actions` and see the details of your running workflow
+2. Edit the file and update the `on:` section to trigger on push events to the `main` branch when files in the `labs/` folder change:
 
-## 1.3 Final
-<details>
-  <summary>github-actions-demo.yml</summary>
-  
-```YAML
+```yaml
 name: 01-1. GitHub Actions Demo
 on: 
   workflow_dispatch:
@@ -54,6 +36,130 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'labs/**'
+      - '.github/workflows/github-actions-demo.yml'
+```
+
+3. Commit the changes to the `main` branch
+
+> 💡 **Understanding triggers:**
+> - `workflow_dispatch`: Allows manual triggering via UI
+> - `workflow_call`: Allows the workflow to be called from other workflows
+> - `push`: Triggers on code pushes
+> - `paths`: Filters which files trigger the workflow (saves runner minutes!)
+
+4. Test the workflow by making a change to any file in the `labs/` folder
+5. Commit the change to trigger the workflow
+6. Navigate to `Actions` tab and observe your running workflow
+
+> ✅ **Success Check:** You should see a new workflow run appear after your commit!
+
+---
+
+## 1.2 Add modern action steps with pinned versions
+
+Let's add steps using marketplace actions with proper version pinning for security.
+
+1. Open the workflow file [github-actions-demo.yml](/.github/workflows/github-actions-demo.yml)
+2. Add the following steps at the end of the `steps:` section (after the existing steps):
+
+```yaml
+      # Using pinned version for security (v4 is latest major version)
+      - name: Hello world action
+        uses: actions/hello-world-javascript-action@v2
+        with:
+          who-to-greet: "Mona the Octocat"
+        id: hello
+      
+      # Access outputs from previous step
+      - name: Echo the greeting's time
+        run: echo 'The time was ${{ steps.hello.outputs.time }}'
+      
+      # Create a rich job summary with markdown
+      - name: Add job summary
+        run: |
+          echo "## Workflow Execution Summary 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ **Job Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "🔀 **Event:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "🌿 **Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "👤 **Actor:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "📦 **Repository:** ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "⏰ **Greeting Time:** ${{ steps.hello.outputs.time }}" >> $GITHUB_STEP_SUMMARY
+```
+
+3. Commit the changes to the `main` branch
+4. Navigate to `Actions` and view the workflow execution
+5. Click on the workflow run and then on the job name
+6. Scroll to the bottom to see the **Job Summary** with formatted markdown!
+
+> 🔒 **Security Best Practice:** Always pin actions to specific versions (@v2, @v4) or commit SHAs to prevent supply chain attacks. Avoid using @main or @latest in production.
+
+---
+
+## 1.3 Understanding Context Variables
+
+GitHub Actions provides rich context information. Let's explore it:
+
+1. Add this debug step to understand available context:
+
+```yaml
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+```
+
+2. Commit and run the workflow
+3. Check the logs to see all available GitHub context properties
+
+> 💡 **Pro Tip:** Use `toJson()` function to pretty-print any context object for debugging.
+
+---
+
+## 1.4 Using modern GITHUB_OUTPUT
+
+The old `set-output` command is deprecated. Let's use the modern approach:
+
+1. Add a step that creates output using the new syntax:
+
+```yaml
+      - name: Set custom output
+        id: custom-output
+        run: |
+          echo "current-time=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
+          echo "random-number=$RANDOM" >> $GITHUB_OUTPUT
+      
+      - name: Use custom output
+        run: |
+          echo "Current time is: ${{ steps.custom-output.outputs.current-time }}"
+          echo "Random number is: ${{ steps.custom-output.outputs.random-number }}"
+```
+
+2. Commit and observe the output in the workflow logs
+
+> ⚠️ **Migration Note:** If you see `::set-output` in old workflows, update to `>> $GITHUB_OUTPUT` for future compatibility.
+
+---
+
+## 1.5 Complete Workflow Example
+
+<details>
+<summary>Click to see the complete updated workflow</summary>
+
+```yaml
+name: 01-1. GitHub Actions Demo
+on: 
+  workflow_dispatch:
+  workflow_call:
+  push:
+    branches:
+      - main
+    paths:
+      - 'labs/**'
+      - '.github/workflows/github-actions-demo.yml'
 
 jobs:
   Explore-GitHub-Actions:
@@ -62,25 +168,81 @@ jobs:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      
       - name: Check out repository code
         uses: actions/checkout@v4
+      
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
+      
       - run: echo "🍏 This job's status is ${{ job.status }}."
-      - name: Adding markdown
-        run: echo "### Hello world! :rocket:" >> "$GITHUB_STEP_SUMMARY"
-      # This step uses GitHub's hello-world-javascript-action: https://github.com/actions/hello-world-javascript-action
-      - name: Hello world
-        uses: actions/hello-world-javascript-action@main
+      
+      # Using pinned version for security
+      - name: Hello world action
+        uses: actions/hello-world-javascript-action@v2
         with:
           who-to-greet: "Mona the Octocat"
         id: hello
-      # This step prints an output (time) from the previous step's action.
+      
       - name: Echo the greeting's time
-        run: echo 'The time was ${{ steps.hello.outputs.time }}.'   
+        run: echo 'The time was ${{ steps.hello.outputs.time }}'
+      
+      # Modern output syntax
+      - name: Set custom output
+        id: custom-output
+        run: |
+          echo "current-time=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
+          echo "random-number=$RANDOM" >> $GITHUB_OUTPUT
+      
+      - name: Use custom output
+        run: |
+          echo "Current time is: ${{ steps.custom-output.outputs.current-time }}"
+          echo "Random number is: ${{ steps.custom-output.outputs.random-number }}"
+      
+      # Create rich job summary
+      - name: Add job summary
+        run: |
+          echo "## Workflow Execution Summary 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ **Job Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "🔀 **Event:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "🌿 **Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "👤 **Actor:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "📦 **Repository:** ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "⏰ **Greeting Time:** ${{ steps.hello.outputs.time }}" >> $GITHUB_STEP_SUMMARY
+          echo "🎲 **Random Number:** ${{ steps.custom-output.outputs.random-number }}" >> $GITHUB_STEP_SUMMARY
 ```
 </details>
 
+---
+
+## 🎓 Key Takeaways
+
+- **Triggers matter:** Use `paths` and `branches` filters to optimize workflow runs
+- **Pin your actions:** Use specific versions (@v4) for security and stability
+- **Modern syntax:** Use `$GITHUB_OUTPUT` instead of deprecated `set-output`
+- **Job summaries:** Provide rich feedback with markdown in `$GITHUB_STEP_SUMMARY`
+- **Context is king:** Leverage `${{ github.* }}` context for dynamic workflows
+
+## 📚 Additional Resources
+
+- [GitHub Actions starter workflows](https://github.com/actions/starter-workflows)
+- [Awesome Actions](https://github.com/sdras/awesome-actions)
+- [Actions Marketplace](https://github.com/marketplace?type=actions)
+
+---
+
+## ✅ Lab Complete!
+
+You've completed Lab 1! You now understand:
+- How to configure workflow triggers
+- Modern syntax for outputs and summaries
+- Security best practices for action versioning
+- How to use context variables effectively
+
+**Next:** Proceed to [Lab 2: Workflow Syntax & Job Dependencies](/labs/lab02.md)
